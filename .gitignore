@@ -1,0 +1,8 @@
+# Ignore HDF5 Data files
+*.h5
+
+# Ignore MATLAB autosave and cache files
+*.asv
+*.m~
+*.mat
+__pycache__/
