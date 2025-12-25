@@ -32,8 +32,7 @@ The primary objective is to validate subsurface radar detections by correlating 
 | `import_porosity_model.m` | Loads and visualizes the reference volumetric porosity model (x-z and x-y slices). |
 | `process_gpr_data_2d.m` | Performs the core verification logic. Generates C-Scan maps and compares GPR signals with the porosity model. |
 | `process_gpr_data_3d.m` | Optimized 3D visualization script using downsampling and energy thresholding. |
-| `GPR_Data.h5` | Input Data: Simulated GPR reflection data. |
-| `Porosity_Model.h5` | Input Data: Ground truth volumetric porosity model. |
+| `*.h5` | **[Excluded]** Data files are not included in this repository due to size constraints. |
 
 ## Algorithm Details
 
@@ -53,6 +52,13 @@ To handle large datasets efficiently in `process_gpr_data_3d.m`, the following l
 - Image Processing Toolbox.
 
 ## Usage
-1. Ensure `GPR_Data.h5` and `Porosity_Model.h5` are in the root directory.
-2. Run `process_gpr_data_2d.m` to see the verification results (Signal vs. Model).
-3. Run `process_gpr_data_3d.m` for the volumetric 3D analysis.
+
+### 1. Data Setup
+**Important:** This repository does not contain the required dataset. To run the simulations, you must obtain the following files and place them in the root directory:
+* `GPR_Data.h5`
+* `Porosity_Model.h5`
+
+### 2. Running the Analysis
+* **2D Verification:** Run `process_gpr_data_2d.m` to generate the comparison map between the GPR signal strength and the reference porosity model.
+* **3D Visualization:** Run `process_gpr_data_3d.m` to view the interactive, optimized 3D scatter plot of the subsurface structures.
+* **Raw Data Inspection:** Use `import_gpr_data.m` or `import_porosity_model.m` to inspect individual slices of the raw data.
