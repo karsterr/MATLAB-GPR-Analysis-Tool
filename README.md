@@ -1,45 +1,69 @@
-# GPR 3D Modelleme Projesi - Radyofrekans ve Sinyal Isleme Tabanli Yeralti Analiz Araci
+# ğŸ“¡ GPR 3D Modeling Project: RF & DSP-Based Underground Analysis Tool
 
-## 1. Özet (Abstract)
-Bu proje, Yer Alti Radari (GPR) verilerini isleyip analiz ederek yeralti anomalilerini 3 boyutlu haritalamayi amaçlayan, tamamen dijital sinyal isleme (DSP) teknikleri tabanli akademik bir çalismadir. Hazir görüntü isleme kütüphaneleri (image processing) kasitli olarak kullanilmamis olup, yalnizca saf sinyal isleme yaklasimlari (DSP) tercih edilmistir. Böylece zemin yapisi ile yeralti hedeflerinin (borular, bosluklar vb.) yansima karakterleri derinlemesine ve elektromanyetik temellere uygun bir sekilde incelenmistir.
+> An academic project dedicated to processing and analyzing Ground Penetrating Radar (GPR) data to map underground anomalies in 3D using pure Digital Signal Processing (DSP) techniques.
 
-## 2. Giris
-Yeralti haritalamasi, kentsel altyapi projeleri ve arkeolojik çalismalar basta olmak üzere boru, kablo, magara gibi yapilarin tespitinde kritik önem tasir. GPR cihazlari elektromanyetik dalgalari kullanarak yeraltinin yüksek çözünürlüklü profillerini sunar. Bu proje, elde edilen karmasik GPR verilerindeki gürültüleri filtreleyerek hedefleri yapay siniflandirmalar üzerinden tanimlanabilir hale getirmeyi hedefler.
+## ğŸ“– Abstract & Introduction
 
-## 3. Metodoloji ve Sinyal Isleme Adimlari (DSP Pipeline)
-GPR verilerinden maksimum bilginin elde edilmesi için sinyal bazinda matematiksel adimlar sirasiyla uygulanmaktadir:
+Underground mapping is critical for detecting structures such as pipes, cables, and caves, especially in urban infrastructure projects and archaeological studies. GPR devices provide high-resolution profiles of the subsurface using electromagnetic waves. 
 
-* **Veri Ön Isleme (Zero-Padding):** 
-Tarama uzunluklari ve veri matrisleri farkli olan GPR kesitleri, zero-padding yöntemi ile ortak bir hacme (grid) sahip olacak sekilde ayni boyuta getirilir.
-* **De-wow (Merkeze Çekme):** 
-Cihazdan veya anten baglantisindan gelen doÄŸru akÄ±m (DC) sapmalarini ve çok düsük frekansli gürültüleri veya drift etkilerini sinyalden arindirmak için uygulanir.
-* **Background Removal (Arka Plan Temizleme):** 
-Tüm izlerde (trace'lerde) ortak olan ve yatay çizgiler seklinde beliren anten kaynakli gürültüler (direct wave vb.), yatay düzlem boyunca ortalama degerin çikarilmasi teknigiyle (mean subtraction) temizlenir.
-* **Gain (Kazanç):** 
-Elektromanyetik dalgalar derinlere indikçe zayiflamaya ugrar. Derin noktalardan gelen zayif yansimalari güçlendirmek amaciyla derinlige (zamana) bagli geometrik kazanç formülleri (örnegin üstel/exponential gain) uygulanir.
-* **Zarf Çikarma (Envelope Detection):** 
-Sinyalin hizli salinimlari yerine enerjisinin (kalinliginin) incelenmesi için sinyalin zarfi, Hilbert Dönüsümü veya esdeger matematiksel yöntemlerle elde edilir.
+This project aims to filter out noise from complex GPR data to make targets identifiable through artificial classifications. **Ready-made image processing libraries were intentionally avoided.** Instead, the project relies exclusively on pure signal processing (DSP) approaches. This ensures that the soil structure and the reflection characteristics of underground targets are examined in depth and strictly in accordance with electromagnetic principles.
 
-## 4. Kod Mimarisi ve Isleyis
-Sistem modüler .m betikleri etrafinda kurgulanmistir:
-- dataset/ klasörüne eklenen çok kesitli tarama verileri load_gpr_data.m üzerinden otomatik olarak okunur.
-- Koordinasyon ve DSP komutlari main.m içinden orkestre edilir. Ana dosya yardimci fonksiyonlari hiyerarsik olarak çagirir, GPR verisini filtreden geçirir ve görsellestirme adimina hazirlar.
+---
 
-## 5. Esikleme (Thresholding) ve Siniflandirma Mantigi
-Boru, kablo, magara veya yeralti bosluklari gibi yapilari ayirt etmek için sinyal genligine dayali bir siniflandirma yapilir:
-- **Ana Boru / Kalin Boru:** En yüksek genliklere sahip hedefler.
-- **Ince Boru:** Orta genlikte ve daha kisitli bir bölgede enerjisi yigilmis hedefler.
-- **Kablo:** Sinyalin daha düsük bölgesel ve ince saçilimlari.
-- **Magara:** Faz degisimi (parlak yankilar) birakan, daha keskin ancak sinyalin devam ettigi yapilar (kod içerisinde spesifik threshold limitleriyle ayristirilmistir).
+## âš™ï¸ Methodology: DSP Pipeline
 
-Son asamada ise, tüm veri kümesi scatter3 fonksiyonu yardimiyla malzeme türüne göre renklendirilerek (Colormap) 3D uzayda isaretlenir. 
+To extract maximum information from the GPR data, the following mathematical steps are applied sequentially on a signal basis:
 
-## 6. Kurulum ve Çalistirma
-Projeyi kendi cihazinizda çalistirmak için:
-1. Depoyu klonlayin veya indirin.
-2. Veri setini https://data.mendeley.com/datasets/by3yh79hx4/1 adresinden indirin.
-3. Indirdiginiz veri setini (büyük boyutlu dosyalari) proje içerisindeki `dataset/` klasörüne tasiyin.
-4. Proje klasörünü MATLAB üzerinde aktif çalisma dizini (Current Folder) yapin.
-5. main.m dosyasini çalistirin. Konsol çiktilarinda islenen her bir adimi görebilir, islem bitiminde 3 boyutlu sonuç plot ekranina erisebilirsiniz.
+1. **Data Preprocessing (Zero-Padding):** GPR cross-sections with varying scan lengths and data matrices are resized using the zero-padding method to ensure they share a common volume (grid) of the same size.
+2. **De-wow (Centering):** Removes direct current (DC) offsets, very low-frequency noise, or drift effects originating from the device or antenna connections.
+3. **Background Removal:** Antenna-induced noise (e.g., direct waves) that is common across all traces and appears as horizontal lines is cleaned using the mean subtraction technique along the horizontal plane.
+4. **Gain Application:** Because electromagnetic waves attenuate as they travel deeper, depth-dependent (time-dependent) geometric gain formulas (e.g., exponential gain) are applied to amplify weak reflections from deeper points.
+5. **Envelope Detection:** To analyze the signal's energy (thickness) rather than its rapid oscillations, the envelope of the signal is obtained using the Hilbert Transform or equivalent mathematical methods.
 
+---
 
+## ğŸ—ï¸ Architecture & Operation
+
+The system is built around modular `.m` scripts to ensure clean and maintainable code:
+
+* **`load_gpr_data.m`**: Automatically reads multi-section scan data added to the `dataset/` directory.
+* **`main.m`**: The core orchestrator. It hierarchically calls helper functions, runs the GPR data through the DSP filters, and prepares it for 3D visualization.
+
+---
+
+## ğŸ” Thresholding & Classification Logic
+
+A classification based on signal amplitude is performed to distinguish various underground structures. In the final stage, the entire dataset is plotted in 3D space using the `scatter3` function, color-coded according to material type using a custom Colormap.
+
+| Target Type | Signal Characteristics |
+| :--- | :--- |
+| **Main / Thick Pipe** | Targets exhibiting the highest signal amplitudes. |
+| **Thin Pipe** | Targets with medium amplitude where energy is concentrated in a more restricted area. |
+| **Cable** | Lower regional and thin scatterings of the signal. |
+| **Cave / Cavity** | Sharper structures where the signal continues, leaving phase shifts (bright echoes) behind. Separated by specific threshold limits within the code. |
+
+---
+
+## ğŸš€ Installation & Usage
+
+Follow these steps to run the project on your local machine:
+
+### Prerequisites
+* **MATLAB** (Ensure you have a recent version installed)
+
+### Setup Steps
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/your-repo-name.git
+   ```
+2. **Download the dataset:**
+   Fetch the required GPR dataset from Mendeley Data:
+   [Download Dataset Here](https://data.mendeley.com/datasets/by3yh79hx4/1)
+3. **Place the data:**
+   Extract and move the downloaded dataset (large files) into the `dataset/` folder within your cloned project directory.
+4. **Configure MATLAB:**
+   Open MATLAB and set the project folder as your active working directory (*Current Folder*).
+5. **Run the pipeline:**
+   Execute the `main.m` script. 
+   
+   *You can monitor each processing step in the MATLAB console output. Upon completion, a 3D scatter plot of the subsurface will be generated.*
