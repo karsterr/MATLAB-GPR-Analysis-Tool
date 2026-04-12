@@ -37,6 +37,8 @@ Son asamada ise, tüm veri kümesi scatter3 fonksiyonu yardimiyla malzeme türüne g
 ## 6. Kurulum ve Çalistirma
 Projeyi kendi cihazinizda çalistirmak için:
 1. Depoyu klonlayin veya indirin.
-2. Incelenecek verilerinizi projede yer alan dataset/ klasörüne tasiyin.
-3. Proje klasörünü MATLAB üzerinde aktif çalisma dizini (Current Folder) yapin.
-4. main.m dosyasini çalistirin. Konsol çiktilarinda islenen her bir adimi görebilir, islem bitiminde 3 boyutlu sonuç plot ekranina erisebilirsiniz.
+2. Veri setini [BURAYA LINK GELECEK] adresinden indirin.
+3. Indirdiginiz veri setini (büyük boyutlu dosyalari) proje içerisindeki `dataset/` klasörüne tasiyin.
+4. Proje klasörünü MATLAB üzerinde aktif çalisma dizini (Current Folder) yapin.
+5. main.m dosyasini çalistirin. Konsol çiktilarinda islenen her bir adimi görebilir, islem bitiminde 3 boyutlu sonuç plot ekranina erisebilirsiniz.
+
